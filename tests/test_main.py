@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from deep_research_agent.main import handler
 
@@ -15,8 +16,10 @@ async def test_handler_returns_response():
     mock_response.status = "COMPLETED"
 
     # Mock _initialized to skip initialization and run_agent to return our mock
-    with patch("deep_research_agent.main._initialized", True), \
-         patch("deep_research_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response):
+    with (
+        patch("deep_research_agent.main._initialized", True),
+        patch("deep_research_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response),
+    ):
         result = await handler(messages)
 
     # Verify we get a result back
@@ -36,8 +39,10 @@ async def test_handler_with_multiple_messages():
     mock_response = MagicMock()
     mock_response.run_id = "test-run-id-2"
 
-    with patch("deep_research_agent.main._initialized", True), \
-         patch("deep_research_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response) as mock_run:
+    with (
+        patch("deep_research_agent.main._initialized", True),
+        patch("deep_research_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response) as mock_run,
+    ):
         result = await handler(messages)
 
     # Verify run_agent was called

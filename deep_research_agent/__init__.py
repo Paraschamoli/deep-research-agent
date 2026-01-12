@@ -11,16 +11,16 @@
 
 from deep_research_agent.__version__ import __version__
 from deep_research_agent.main import (
+    cleanup,
     handler,
     initialize_agent,
     main,
-    cleanup,
 )
 
 __all__ = [
     "__version__",
+    "cleanup",
     "handler",
     "initialize_agent",
     "main",
-    "cleanup",
 ]

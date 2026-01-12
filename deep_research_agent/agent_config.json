@@ -15,8 +15,12 @@
     "url": "http://127.0.0.1:3773",
     "expose": true,
     "protocol_version": "1.0.0",
-    "proxy_urls": ["127.0.0.1"],
-    "cors_origins": ["*"]
+    "proxy_urls": [
+      "127.0.0.1"
+    ],
+    "cors_origins": [
+      "*"
+    ]
   },
   "storage": {
     "type": "memory"

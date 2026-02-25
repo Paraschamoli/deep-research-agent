@@ -213,6 +213,9 @@ documentation:
     - version: "1.0.0"
       date: "2026-01-11"
       changes: "Initial release with Exa research integration, citation tracking, and structured output"
+    - version: "1.1.0"
+      status: "planned"
+      changes: "Add historical trend analysis and longitudinal research tracking"
 
 # Assessment fields for skill negotiation
 assessment:

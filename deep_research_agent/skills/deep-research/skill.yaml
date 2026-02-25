@@ -5,23 +5,12 @@ author: paras25619@gmail.com
 
 # Description
 description: |
-  An AI-powered deep research skill that performs comprehensive, multi-step research
-  with automatic citation tracking and structured output. This skill enables advanced
-  research capabilities using Exa research tools for discovering sources, validating
-  information, and synthesizing accurate insights from complex topics.
+  AI-powered deep research agent that performs comprehensive research with automatic citation tracking and structured output.
 
 # Tags and Modes
 tags:
   - deep-research
   - citation-tracking
-  - exa-tools
-  - research-analysis
-  - structured-output
-  - web-research
-  - fact-checking
-  - data-synthesis
-  - academic-research
-  - market-research
 
 input_modes:
   - text/plain
@@ -34,33 +23,41 @@ output_modes:
 
 # Example Queries
 examples:
-  - "Perform comprehensive research on quantum computing advancements in 2024 with citations"
-  - "Research the impact of AI regulation on global tech companies. Use structured output schema"
-  - "Analyze market trends in renewable energy storage technologies with citation tracking"
+  - "Analyze market trends in renewable energy storage technologies with citation tracking."
   - "Conduct deep research on mRNA vaccine technology developments with academic citations"
-  - "Research competitive landscape of electric vehicle manufacturers with financial data"
-  - "Analyze geopolitical implications of semiconductor supply chain disruptions"
-  - "Perform comprehensive literature review on climate change adaptation strategies"
-  - "Research emerging trends in generative AI applications across different industries"
+
+# Detailed Capabilities
+capabilities_detail:
+  primary_capability:
+    supported: true
+    description: "Performs comprehensive research with automatic citation tracking and structured output"
+    features:
+      - "Real-time web research using Exa tools"
+      - "Automatic citation tracking and validation"
+      - "Structured output with research report format"
+    limitations: "Focused on web-based research, processing time depends on query complexity"
+
+  secondary_capability:
+    supported: false
+    planned_version: "2.0.0"
+    description: "Historical trend analysis and longitudinal research tracking"
 
 # Requirements
 requirements:
   packages:
-    - agno>=2.2.0
-    - exa-py>=2.0.0
-    - openai>=2.11.0
-    - python-dotenv>=1.0.1
-  system: []
-  min_memory_mb: 512
-  external_services:
-    - Exa API (for research and citation tracking)
-    - OpenAI API or OpenRouter API (for LLM capabilities)
+    - "agno"
+    - "exa-py"
+    - "pydantic"
+    - "bindu"
+  system:
+    - "Python 3.12+"
+  min_memory_mb: 256
 
 # Performance Metrics
 performance:
-  avg_processing_time_ms: 8000
-  max_concurrent_requests: 3
-  memory_per_request_mb: 512
+  avg_processing_time_ms: 15000
+  max_concurrent_requests: 10
+  memory_per_request_mb: 256
   scalability: horizontal
 
 # Tool Restrictions
@@ -76,11 +73,9 @@ allowed_tools:
 # Rich Documentation
 documentation:
   overview: |
-    This skill specializes in deep, comprehensive research using Exa's advanced research
-    capabilities. It automatically tracks citations, validates sources, and provides
-    structured outputs. The skill follows a multi-step research methodology that
-    includes planning, source discovery, analysis, and synthesis with proper academic
-    citation practices.
+    Deep research agent that coordinates web research using Exa tools.
+    Uses specialized tools for fetching sources, analyzing content, and synthesizing findings.
+    Built on Agno framework with OpenRouter models and structured output.
 
   use_cases:
     when_to_use:
@@ -100,68 +95,69 @@ documentation:
       - Code generation or technical troubleshooting
 
   input_structure: |
-    Accepts research queries with optional schema specifications:
+    JSON-RPC 2.0 message with user query in parts array.
 
+    Example:
     {
-      "query": "Research topic or question",
-      "schema": {"type": "object", "properties": {...}},  # Optional structured output schema
-      "depth": "quick|standard|comprehensive",
-      "sources_required": 5,
-      "citation_format": "apa|mla|chicago"
+      "jsonrpc": "2.0",
+      "method": "message/send",
+      "params": {
+        "message": {
+          "role": "user",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Analyze market trends in renewable energy storage technologies with citation tracking."
+            }
+          ],
+          "kind": "message",
+          "messageId": "af476c38-3f8b-48f7-b230-22f54cec4401",
+          "contextId": "af476c38-3f8b-48f7-b230-22f54cec4402",
+          "taskId": "af476c38-3f8b-48f7-b230-22f54cec4403"
+        },
+        "skillId": "deep-research-v1",
+        "configuration": {
+          "acceptedOutputModes": [
+            "application/json"
+          ]
+        }
+      },
+      "id": "af476c38-3f8b-48f7-b230-22f54cec4404"
     }
 
-    Constraints:
-    - Max query length: 500 characters
-    - Max sources per query: 25
-    - Timeout: 180 seconds
-    - Language: English primary
-
   output_format: |
-    Structured Research Output:
+    JSON-RPC 2.0 result with task history and artifacts containing markdown research report.
+
+    Success Response:
     {
-      "success": true,
-      "research_report": {
-        "title": "Generated research title",
-        "executive_summary": "Brief overview of findings...",
-        "methodology": "Research approach and tools used...",
-        "findings": [
+      "jsonrpc": "2.0",
+      "id": "af476c38-3f8b-48f7-b230-22f54cec4404",
+      "result": {
+        "id": "af476c38-3f8b-48f7-b230-22f54cec4403",
+        "context_id": "af476c38-3f8b-48f7-b230-22f54cec4402",
+        "kind": "task",
+        "status": {
+          "state": "completed",
+          "timestamp": "2026-02-25T16:46:20.901277+00:00"
+        },
+        "history": [
           {
-            "section": "Section title",
-            "content": "Detailed findings...",
-            "citations": [{"source": "URL", "title": "Source title", "relevance": 0.95}]
+            "kind": "message",
+            "role": "user",
+            "parts": [{"kind": "text", "text": "Analyze market trends in renewable energy storage technologies with citation tracking."}]
+          },
+          {
+            "kind": "message",
+            "role": "assistant",
+            "parts": [{"kind": "text", "text": "# Research Report: Market Trends in Renewable Energy Storage Technologies\n\n## Executive Summary\n... (full report) ..."}]
           }
         ],
-        "data_tables": [
+        "artifacts": [
           {
-            "title": "Table title",
-            "headers": ["Column 1", "Column 2"],
-            "rows": [
-              {"data": ["Value 1", "Value 2"], "citations": ["citation_ref"]}
-            ]
+            "name": "result",
+            "parts": [{"kind": "text", "text": "# Research Report: Market Trends in Renewable Energy Storage Technologies\n\n... (full report) ..."}]
           }
-        ],
-        "conclusions": "Evidence-based conclusions...",
-        "recommendations": "Actionable recommendations...",
-        "limitations": "Research scope and limitations..."
-      },
-      "citations": [
-        {
-          "id": "citation_1",
-          "url": "source_url",
-          "title": "article_title",
-          "author": "author_name",
-          "date": "publication_date",
-          "relevance_score": 0.92,
-          "summary": "Key points from source"
-        }
-      ],
-      "metadata": {
-        "query": "original_query",
-        "processing_time_ms": 8500,
-        "sources_analyzed": 18,
-        "sources_used": 12,
-        "confidence_score": 0.89,
-        "research_depth": "comprehensive"
+        ]
       }
     }
 
@@ -173,62 +169,45 @@ documentation:
     - "Conflicting information: Presents multiple perspectives with source credibility"
 
   examples:
-    - title: "Quantum Computing Research"
+    - title: "Market Trends Research"
       input:
-        query: "Research recent advancements in quantum computing error correction"
-        depth: "comprehensive"
-        sources_required: 15
+        parts:
+          - kind: "text"
+            text: "Analyze market trends in renewable energy storage technologies with citation tracking."
       output:
-        success: true
-        research_report:
-          title: "Advances in Quantum Error Correction: 2023-2024 Review"
-          executive_summary: "Significant progress in quantum error correction techniques..."
-          findings: [...]
-        citations: [...]
-        metadata:
-          processing_time_ms: 12500
-          sources_analyzed: 22
+        text: |
+          # Research Report: Market Trends in Renewable Energy Storage Technologies
 
-    - title: "Market Analysis Research"
-      input:
-        query: "Analyze competitive landscape in electric vehicle battery technology"
-        schema: {"type": "object", "properties": {"companies": {}, "technologies": {}, "market_share": {}}}
-      output:
-        success: true
-        research_report:
-          title: "EV Battery Technology Competitive Analysis"
-          executive_summary: "Dominant players and emerging technologies in EV battery market..."
-          findings: [...]
-        citations: [...]
-        metadata:
-          processing_time_ms: 9800
-          sources_analyzed: 16
+          ## Executive Summary
+          In 2026, the renewable energy storage market is set to experience significant advancements...
+          (full detailed report as per sample)
 
   best_practices:
     for_developers:
-      - "Specify output schemas for structured data extraction"
-      - "Use depth parameter to control research intensity"
-      - "Set reasonable source limits based on topic complexity"
-      - "Implement caching for frequently researched topics"
-      - "Monitor API usage and implement rate limiting"
-      - "Validate citation quality and relevance scores"
+      - "Use async/await for all research operations"
+      - "Implement timeout handling for long queries"
+      - "Cache sources to reduce API calls"
+      - "Test with various research topics and edge cases"
 
     for_orchestrators:
       - "Route complex research queries to this agent"
-      - "Chain with summarization agents for executive briefings"
-      - "Consider longer timeouts for comprehensive research"
-      - "Use for evidence-based decision support"
-      - "Monitor source diversity to avoid bias"
-      - "Implement quality checks on citation relevance"
+      - "Chain with summarization or analysis skills"
+      - "Expect 10-30 second processing time per request"
+      - "Implement retry logic with exponential backoff"
+      - "Monitor agent response times and API rate limits"
 
   installation: |
+    Install via uv package manager.
+
     Required packages:
-    pip install agno exa-py openai python-dotenv
+    uv sync
 
     Environment variables:
-    EXA_API_KEY=your_exa_api_key                # Required
-    OPENAI_API_KEY=your_openai_api_key          # OR
-    OPENROUTER_API_KEY=your_openrouter_api_key  # Alternative to OpenAI
+    EXA_API_KEY=<your-key>
+    OPENROUTER_API_KEY=<your-key>  # or OPENAI_API_KEY
+
+    Run:
+    uv run python -m deep_research_agent
 
   versioning:
     - version: "1.0.0"
@@ -238,52 +217,29 @@ documentation:
 # Assessment fields for skill negotiation
 assessment:
   keywords:
-    - research
-    - deep research
-    - comprehensive
-    - citation
-    - citation tracking
-    - exa
-    - structured output
-    - academic research
-    - market research
-    - analysis
-    - synthesis
-    - fact checking
-    - sources
-    - evidence
+    - "research"
+    - "deep research"
+    - "citation"
+    - "web research"
 
   specializations:
-    - domain: technology_research
-      confidence_boost: 0.3
-    - domain: market_analysis
-      confidence_boost: 0.3
-    - domain: scientific_research
-      confidence_boost: 0.2
-    - domain: policy_research
-      confidence_boost: 0.2
+    - domain: "research"
+      confidence_boost: 1.0
 
   anti_patterns:
-    - "simple question"
-    - "quick answer"
-    - "opinion"
-    - "personal advice"
-    - "mathematical calculation"
-    - "code generation"
-    - "real-time events"
-    - "live updates"
+    - "Simple fact-checking"
+    - "Real-time news"
+    - "Opinion-based queries"
+    - "Mathematical calculations"
+    - "Code generation"
 
   complexity_indicators:
     simple:
-      - "basic research"
-      - "few sources required"
-      - "simple topic"
+      - "Basic research queries"
+      - "Few sources needed"
     medium:
-      - "moderate research"
-      - "multiple perspectives"
-      - "structured output needed"
+      - "Moderate research with multiple sources"
+      - "Structured output required"
     complex:
-      - "comprehensive research"
-      - "academic citations required"
-      - "complex schema output"
-      - "multiple validation steps"
+      - "Comprehensive academic research"
+      - "Multiple citations and validation"

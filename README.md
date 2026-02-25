@@ -6,8 +6,8 @@
 <h3 align="center">AI-Powered Deep Research with Citation Tracking</h3>
 
 <p align="center">
-  <strong>Comprehensive multi-step research with automatic citation tracking and structured output</strong><br/>
-  Leverages Exa research tools for source discovery, validation, and evidence-based insights
+  <strong>AI-powered deep research agent that performs comprehensive research with automatic citation tracking and structured output.</strong><br/>
+  Coordinates specialized research tools to discover sources, validate information, and provide evidence-based insights.
 </p>
 
 <p align="center">
@@ -27,6 +27,12 @@
 ## 🎯 What is Deep Research Agent?
 
 An AI-powered research analyst that performs comprehensive, multi-step investigations with automatic citation tracking. Think of it as having a team of research assistants who automatically discover sources, validate information, and synthesize accurate, structured insights from complex topics.
+
+### Skills
+The agent includes the `deep-research` skill for comprehensive research capabilities:
+- **Primary Capability**: Performs comprehensive research with automatic citation tracking and structured output
+- **Features**: Real-time web research using Exa tools, automatic citation tracking and validation, structured output with research report format
+- **Limitations**: Focused on web-based research, processing time depends on query complexity
 
 ### Key Features
 *   **🔍 Multi-Step Research** - Comprehensive investigation methodology
@@ -126,19 +132,38 @@ Default port: `3773` (can be changed in `agent_config.json`)
 
 ## 💡 Usage Examples
 
-### Via HTTP API
+### Via JSON-RPC API
 
 ```bash
-curl -X POST http://localhost:3773/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "messages": [
-      {
-        "role": "user",
-        "content": "Perform comprehensive research on quantum computing advancements in 2024. Include citations, compare major approaches, and analyze market implications."
-      }
-    ]
-  }'
+curl --location 'http://localhost:3773' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer sk-or-v1-...' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [
+        {
+          "kind": "text",
+          "text": "Analyze market trends in renewable energy storage technologies with citation tracking."
+        }
+      ],
+      "kind": "message",
+      "messageId": "af476c38-3f8b-48f7-b230-22f54cec4401",
+      "contextId": "af476c38-3f8b-48f7-b230-22f54cec4402",
+      "taskId": "af476c38-3f8b-48f7-b230-22f54cec4403"
+    },
+    "skillId": "deep-research-v1",
+    "configuration": {
+      "acceptedOutputModes": [
+        "application/json"
+      ]
+    }
+  },
+  "id": "af476c38-3f8b-48f7-b230-22f54cec4404"
+}'
 ```
 
 ### Sample Research Queries
